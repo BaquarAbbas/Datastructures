@@ -1,90 +1,68 @@
-
+Heap_size = 10
 class Heap(object):
-
-	HEAP_SIZE = 10
-	
-	def __init__(self):
-		self.heap = [0]*Heap.HEAP_SIZE;
-		self.currentPosition = -1;
-		
-	def insert(self, item):
-	
-		if self.isFull():
-			print("Heap is full..");
-			return 
-			
-		self.currentPosition = self.currentPosition + 1
-		self.heap[self.currentPosition] = item
-		self.fixUp(self.currentPosition)
-		
-	def fixUp(self, index):
-	
-		parentIndex = int((index-1)/2)
-		
-		while parentIndex >= 0 and self.heap[parentIndex] < self.heap[index]:
-			temp = self.heap[index]
-			self.heap[index] = self.heap[parentIndex]
-			self.heap[parentIndex] = temp
-			index=parentIndex
-			parentIndex = (int)((index-1)/2)
-			
-	def heapsort(self):
-	
-		for i in range(0,self.currentPosition+1):
-			temp = self.heap[0]
-			print("%d " % temp)
-			self.heap[0] = self.heap[self.currentPosition-i]
-			self.heap[self.currentPosition-i] = temp
-			self.fixDown(0,self.currentPosition-i-1)
-			
-	def fixDown(self, index, upto):
-
-		while index <= upto:
-		
-			leftChild = 2*index+1
-			rightChild = 2*index+2
-	
-			if leftChild < upto:
-				childToSwap = None
-				
-				if rightChild > upto:
-					childToSwap = leftChild
-				else:
-					if self.heap[leftChild] > self.heap[rightChild]:
-						childToSwap = leftChild
-					else:
-						childToSwap = rightChild
-				
-				if self.heap[index] < self.heap[childToSwap]:
-					temp = self.heap[index]
-					self.heap[index] = self.heap[childToSwap]
-					self.heap[childToSwap] = temp
-				else:
-					break
-				
-				index = childToSwap
-			else:
-				break;							
-			
-	def isFull(self):
-		if self.currentPosition == Heap.HEAP_SIZE:
-			return True
-		else:
-			return False
-			
-			
-if __name__ == "__main__":
-
-	heap = Heap()
-	heap.insert(10)
-	heap.insert(-20)
-	heap.insert(0)
-	heap.insert(2)
-	heap.insert(4)
-	heap.insert(5)
-	heap.insert(6)
-	heap.insert(7)
-	heap.insert(20)
-	heap.insert(15)
-	
-	heap.heapsort()
+    def __init__(self):
+        self.heap = [0]*Heap_size
+        self.heap_size = 0
+    def insert(self,item):
+        if Heap_size == self.heap_size:
+            return
+        self.heap[self.heap_size] = item
+        self.heap_size += 1
+        self.fix_up(self.heap_size-1)
+    def fix_up(self,index):
+        parent_index = (index-1)//2
+        if index > 0 and self.heap[index] > self.heap[parent_index]:
+            self.swap(index,parent_index)
+            self.fix_up(parent_index)
+    def swap(self,index1,index2):
+        self.heap[index2],self.heap[index1] = self.heap[index1],self.heap[index2]
+    def get_max(self):
+        return self.heap[0]
+    def poll(self):
+        max = self.get_max()
+        self.swap(0,self.heap_size - 1)
+        self.heap_size -= 1
+        self.fix_down(0)
+        return max
+    def fix_down(self,index):
+        index_left = 2*index+1
+        index_right = 2*index+2
+        index_largest = index
+        if index_left < self.heap_size and self.heap[index_left] > self.heap[index]:
+            index_largest = index_left
+        if index_right < self.heap_size and self.heap[index_right] > self.heap[index]:
+            index_largest = index_right
+        if index != index_largest:
+            self.swap(index,index_largest)
+            self.fix_down(index_largest)
+    def heap_sort(self):
+        size = self.heap_size 
+        for i in range(size):
+            max = self.poll()
+            print(max)
+            
+h1 = Heap()
+h1.insert(10)
+h1.insert(8)
+h1.insert(12)
+h1.insert(20)
+h1.insert(-2)
+h1.insert(0)
+h1.insert(1)
+h1.insert(321)
+print("Max element is :",h1.get_max())
+h1.heap_sort()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
