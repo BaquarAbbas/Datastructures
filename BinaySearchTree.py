@@ -25,39 +25,45 @@ class BinarySearchTree(object):
     def remove(self,data):
         if self.root:
             self.root = self.removeNode(data,self.root)
-    def removeNode(self,data,node):
-        if not node:
-            return node
-        if data < node.data:
-            node.leftchild = self.removeNode(data,node.leftchild)
-        elif data > node.data:
-            node.rightchild = self.removeNode(data,node.rightchild)
-        else:
-            if not node.leftchild and not node.rightchild:
-               print("Removing a leaf node...")
-               del node
-               return node
-            if not node.leftchild:
-                print("Removing a node with single right-child..")
-                tempnode = node.rightchild
-                del node 
-                return tempnode
-            elif not node.rightchild:
-                 print("Removing a node with single left-child...")
-                 tempnode = node.leftchild
-                 del node 
-                 return tempnode
-            else:
-                print("Removing a node with two children...")
-                tempnode = self.getPredecessor(node.leftchild)
-                node.data = tempnode.data
-                node.leftchild = self.removeNode(tempnode.data,node.leftchild)
-        return node
-    
-    def getPredecessor(self,node):
-        if node.rightchild:
-            return self.Predecessor(node.rightchild)
-        return node
+    def removeNode(self, data, node):
+	
+		if not node:
+			return node
+			
+		if data < node.data:
+			node.leftChild = self.removeNode(data, node.leftChild)
+		elif data > node.data:
+			node.rightChild = self.removeNode(data, node.rightChild)
+		else:
+			
+			if not node.leftChild and not node.rightChild:
+				print("Removing a leaf node...")
+				del node
+				return None
+				
+			if not node.leftChild:  # node !!!
+				print("Removing a node with single right child...")
+				tempNode = node.rightChild
+				del node
+				return tempNode
+			elif not node.rightChild:   # node instead of self
+				print("Removing a node with single left child...")
+				tempNode = node.leftChild
+				del node
+				return tempNode
+			
+			print("Removing node with two children....")
+			tempNode = self.getPredecessor(node.leftChild)   # self instead of elf  + get predecessor 
+			node.data = tempNode.data
+			node.leftChild = self.removeNode(tempNode.data, node.leftChild)
+		
+		return node  # 
+
+	def getPredecessor(self, node):
+	
+		if node.rightChild:
+			return self.getPredeccor(node.rightChild)
+		return node
     def traverse(self):
         if self.root:
             self.traverse_Inorder(self.root)
